@@ -5,20 +5,22 @@ BEGIN;
 
 CREATE TABLE IF NOT EXISTS public."Campaign"
 (
-    cf_id character varying COLLATE pg_catalog."default" NOT NULL,
+    cf_id bigint NOT NULL,
     contact_id character varying COLLATE pg_catalog."default" NOT NULL,
     company_name character varying COLLATE pg_catalog."default",
-    description character varying(200)[] COLLATE pg_catalog."default",
-    goal real,
-    pledged real,
+    description character varying COLLATE pg_catalog."default",
+    goal double precision,
+    pledged double precision,
     outcome character varying COLLATE pg_catalog."default",
     backers_count bigint,
     country character varying COLLATE pg_catalog."default",
     currency character varying COLLATE pg_catalog."default",
-    launch_date date,
-    end_date date,
+    staff_pick character varying COLLATE pg_catalog."default",
+    spotlight character varying COLLATE pg_catalog."default",
     category_id character varying COLLATE pg_catalog."default" NOT NULL,
     subcategory_id character varying COLLATE pg_catalog."default" NOT NULL,
+    launched_date character varying COLLATE pg_catalog."default",
+    end_date character varying COLLATE pg_catalog."default",
     CONSTRAINT "Campaign_pkey" PRIMARY KEY (cf_id)
 );
 
@@ -46,7 +48,7 @@ CREATE TABLE IF NOT EXISTS public."Subcategory"
 );
 
 ALTER TABLE IF EXISTS public."Campaign"
-    ADD CONSTRAINT "Categories" FOREIGN KEY (category_id)
+    ADD CONSTRAINT cat FOREIGN KEY (category_id)
     REFERENCES public."Category" (category_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
@@ -54,15 +56,14 @@ ALTER TABLE IF EXISTS public."Campaign"
 
 
 ALTER TABLE IF EXISTS public."Campaign"
-    ADD CONSTRAINT "Contacts" FOREIGN KEY (contact_id)
+    ADD CONSTRAINT contact FOREIGN KEY (contact_id)
     REFERENCES public."Contacts" (contact_id) MATCH SIMPLE
     ON UPDATE NO ACTION
-    ON DELETE NO ACTION
-    NOT VALID;
+    ON DELETE NO ACTION;
 
 
 ALTER TABLE IF EXISTS public."Campaign"
-    ADD CONSTRAINT "SubCategories" FOREIGN KEY (subcategory_id)
+    ADD CONSTRAINT subcat FOREIGN KEY (subcategory_id)
     REFERENCES public."Subcategory" (subcategory_id) MATCH SIMPLE
     ON UPDATE NO ACTION
     ON DELETE NO ACTION
